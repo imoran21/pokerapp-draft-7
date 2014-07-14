@@ -1,0 +1,696 @@
+{% extends 'pokerapp/base.html' %}
+
+{% block content %}
+
+<style type="text/css">
+
+
+.usernode{
+
+  border-radius:5px;
+
+}
+
+
+body{
+   background-color: white;
+
+}
+
+
+.container{
+  margin-bottom:20px;
+  padding:20px;
+
+}
+.panel{
+  box-shadow: 3px 1px 1px 1px #ccc;
+}
+  
+.dealer{
+  background-color:white;
+  color:black;
+  border: .2px solid black;
+}
+
+a:hover{
+	text-decoration:none;
+}
+.bet_button{
+  left:70%;
+  position:absolute;
+  width:65px;
+  height:65px;
+  border-radius: 55px;
+  text-align:center;
+  z-index:10;
+    -webkit-box-shadow: 1px 1px 1px 1px #ccc;  /* Safari 3-4, iOS 4.0.2 - 4.2, Android 2.3+ */
+  -moz-box-shadow:   1px 1px 1px 1px #ccc;  /* Firefox 3.5 - 3.6 */
+  box-shadow:1px 1px 1px 1px #ccc;
+
+
+
+}
+
+
+.card {
+  font-family: 'Oxygen', sans-serif;
+  -webkit-box-shadow: 1px 1px 1px 1px #ccc;  /* Safari 3-4, iOS 4.0.2 - 4.2, Android 2.3+ */
+  -moz-box-shadow:   1px 1px 1px 1px #ccc;  /* Firefox 3.5 - 3.6 */
+  box-shadow:1px 1px 1px 1px #ccc;
+  border:.3px solid black;
+
+  -webkit-user-select: none; 
+  -moz-user-select: none;
+  -ms-user-select: none;
+  width: 80px;
+  height: 100px;
+  background: white;
+  border-radius: 3px;
+
+  position: relative;
+  top: 5px;
+
+}
+.card >div{
+    font-family: 'Oxygen', sans-serif;
+}
+.value_top{
+  position:relative;
+  bottom:45px;
+  left:7px;
+  
+
+}
+.value_bottom{
+    position:relative;
+  bottom:32px;
+  right:7px;
+  -moz-transform: rotate(-180deg);
+  -webkit-transform: rotate(-180deg);
+  transform: rotate(-180deg);
+  z-index:20;
+
+
+
+}
+.suit_middle{
+  position:relative;
+  top:20px;
+  font-size:35px;
+  width:100%;
+  text-align:center
+}
+
+.suit_top {
+  position:relative;
+  bottom:69px;
+  left:4px;
+
+
+}
+
+.suit_bottom{
+  display:none;
+
+  bottom:19px;
+  right:4px;
+  -moz-transform: rotate(-180deg);
+  -webkit-transform: rotate(-180deg);
+  transform: rotate(-180deg);
+
+  z-index:20;
+
+}
+
+.card {
+  display:inline-block;
+
+}
+
+.cardimg{
+  width:100%;
+  height:100%;
+}
+
+
+.black >div{
+  color: black;
+}
+
+.red >div{
+  color:red;
+}
+
+.onbet{
+  background-color:gold;
+  color:red;
+  font-weight:150%;
+  top:30px;
+  opacity:.9;
+
+}
+
+.bigblind{
+  background-color:black;
+  color:white;
+}
+.smallblind{
+  background-color:green;
+  color:white;
+}
+
+.smallblind>p{
+  top:10px;
+  position: relative;
+}
+.bigblind>p{
+  top:10px;
+  position:relative;
+}
+.onbet>p{
+  position:relative;
+  top:10px;
+
+}
+.panel-body{
+background: rgba(169,3,41,1);
+background: -moz-linear-gradient(left, rgba(169,3,41,1) 0%, rgba(143,2,34,1) 44%, rgba(109,0,25,1) 100%);
+background: -webkit-gradient(left top, right top, color-stop(0%, rgba(169,3,41,1)), color-stop(44%, rgba(143,2,34,1)), color-stop(100%, rgba(109,0,25,1)));
+background: -webkit-linear-gradient(left, rgba(169,3,41,1) 0%, rgba(143,2,34,1) 44%, rgba(109,0,25,1) 100%);
+background: -o-linear-gradient(left, rgba(169,3,41,1) 0%, rgba(143,2,34,1) 44%, rgba(109,0,25,1) 100%);
+background: -ms-linear-gradient(left, rgba(169,3,41,1) 0%, rgba(143,2,34,1) 44%, rgba(109,0,25,1) 100%);
+background: linear-gradient(to right, rgba(169,3,41,1) 0%, rgba(143,2,34,1) 44%, rgba(109,0,25,1) 100%);
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a90329', endColorstr='#6d0019', GradientType=1 );
+}
+
+
+
+
+
+</style>
+
+
+
+
+<div class ="container" style ="box-shadow:0px 0px 0px 0px; color:black;">
+
+
+
+    <div class="page-header">
+  <h1> &nbsp; &nbsp;Table: {{table.name}} <small> Owner: {{table.creator}}</small></h1>
+  {% if table.insession %}
+    {% if error %}
+   <div class="alert alert-warning" role="alert">{{error}}</div>  
+   {% endif %}
+
+  <!--
+   <div class="alert alert-success" role="alert">Game in Progress <br> On Bet: <span style = "color:purple; font-size:20px">{{hand.on_bet}}</span></div>  -->
+  {% else %}
+
+
+  <div class="alert alert-warning" role="alert">Waiting for {{table.creator}} to start game</div>
+
+  {% endif %}
+
+
+</div>
+ {% if table.insession and creator %}
+   <a type="button"href ="/pokerapp/end_game" class="btn btn-danger">End Game</a>
+    <a type="button"href ="/pokerapp/end_table" class="btn btn-danger">End Table</a>
+   {% else %}
+
+
+      <div class="btn-group btn-group-sm">
+        
+      
+        <a type="button"href ="/pokerapp/leave_table" class="btn btn-danger">Leave Game</a>
+
+      </div>
+    {% endif %}
+
+
+
+<div class= "row" style="margin-bottom:30px;">
+
+    <div class ="col-md-7 col-md-offset-2 col-sm-12 flop" style="">
+        <div class="panel panel-primary">
+            <div class="panel-heading"> 
+        <h4 > <span class="glyphicon glyphicon-tower"></span> Flop </h4> 
+      </div>
+      <div class="panel-body">
+
+    {% if flop_1 %}
+      <div class="card {{flop_1.color}}" style="position:relative" >
+              
+               {% autoescape off %}
+               <div class="suit_middle">{{flop_1.c1s}}</div>
+               {% endautoescape %}
+
+
+                <div class="value_top">{{flop_1.c1n}}</div>
+                <br />
+                {% autoescape off %}
+                <div class="suit_top ">{{flop_1.c1s}}</div>
+                {% endautoescape %}
+                
+
+
+                <div class="value_bottom">{{flop_1.c1n}}</div>
+                <br />
+                
+                {% autoescape off %}
+               <div class="suit_bottom">{{flop_1.c1s}}</div>
+               {% endautoescape %}
+
+            </div>
+          
+     {% else %}
+
+    <div class="card"><img class = "cardimg" src="http://i.imgur.com/kuqu0aS.jpg"></div>
+
+    {% endif %}
+
+    {% if flop_2 %}
+      <div class="card {{flop_2.color}}" style="position:relative" >
+              
+               {% autoescape off %}
+               <div class="suit_middle">{{flop_2.c1s}}</div>
+               {% endautoescape %}
+
+
+                <div class="value_top">{{flop_2.c1n}}</div>
+                <br />
+                {% autoescape off %}
+                <div class="suit_top ">{{flop_2.c1s}}</div>
+                {% endautoescape %}
+                
+
+
+                <div class="value_bottom">{{flop_2.c1n}}</div>
+                <br />
+                
+                {% autoescape off %}
+               <div class="suit_bottom">{{flop_2.c1s}}</div>
+               {% endautoescape %}
+
+            </div>
+          
+     {% else %}
+
+    <div class="card"><img class = "cardimg" src="http://i.imgur.com/kuqu0aS.jpg"></div>
+
+    {% endif %}
+
+
+    {% if flop_3 %}
+      <div class="card {{flop_3.color}}" style="position:relative" >
+              
+               {% autoescape off %}
+               <div class="suit_middle">{{flop_3.c1s}}</div>
+               {% endautoescape %}
+
+
+                <div class="value_top">{{flop_3.c1n}}</div>
+                <br />
+                {% autoescape off %}
+                <div class="suit_top ">{{flop_3.c1s}}</div>
+                {% endautoescape %}
+                
+
+
+                <div class="value_bottom">{{flop_3.c1n}}</div>
+                <br />
+                
+                {% autoescape off %}
+               <div class="suit_bottom">{{flop_3.c1s}}</div>
+               {% endautoescape %}
+
+            </div>
+          
+     {% else %}
+
+    <div class="card"><img class = "cardimg" src="http://i.imgur.com/kuqu0aS.jpg"></div>
+
+    {% endif %}
+    {% if flop_4 %}
+      <div class="card {{flop_4.color}}" style="position:relative" >
+              
+               {% autoescape off %}
+               <div class="suit_middle">{{flop_4.c1s}}</div>
+               {% endautoescape %}
+
+
+                <div class="value_top">{{flop_4.c1n}}</div>
+                <br />
+                {% autoescape off %}
+                <div class="suit_top ">{{flop_4.c1s}}</div>
+                {% endautoescape %}
+                
+
+
+                <div class="value_bottom">{{flop_4.c1n}}</div>
+                <br />
+                
+                {% autoescape off %}
+               <div class="suit_bottom">{{flop_4.c1s}}</div>
+               {% endautoescape %}
+
+            </div>
+          
+     {% else %}
+
+    <div class="card"><img class = "cardimg" src="http://i.imgur.com/kuqu0aS.jpg"></div>
+
+    {% endif %}
+    {% if flop_5 %}
+      <div class="card {{flop_5.color}}" style="position:relative" >
+              
+               {% autoescape off %}
+               <div class="suit_middle">{{flop_5.c1s}}</div>
+               {% endautoescape %}
+
+
+                <div class="value_top">{{flop_5.c1n}}</div>
+                <br />
+                {% autoescape off %}
+                <div class="suit_top ">{{flop_5.c1s}}</div>
+                {% endautoescape %}
+                
+
+
+                <div class="value_bottom">{{flop_5.c1n}}</div>
+                <br />
+                
+                {% autoescape off %}
+               <div class="suit_bottom">{{flop_5.c1s}}</div>
+               {% endautoescape %}
+
+            </div>
+          
+     {% else %}
+
+    <div class="card"><img class = "cardimg" src="http://i.imgur.com/kuqu0aS.jpg"></div>
+
+    {% endif %}
+
+     </div>
+   </div>
+
+</div>
+
+  </div>
+
+</div>
+
+
+
+
+
+
+
+
+<div class="container">
+<div class="row">
+
+
+  <div class ="usernode col-md-4 col-sm-6 col-xs-12">
+   
+
+     {% if player_bet %}
+          <div class="bet_button onbet"> <p> ON <br>BET</p></div> 
+    <div class="panel panel-warning">
+
+
+    {% elif player.fold %}
+     <div class="panel panel-danger">
+
+    {% else %}
+
+     <div class="panel panel-primary">
+
+    {% endif %}
+
+      <div class="panel-heading"> 
+        <h4 > <span class="glyphicon glyphicon-user"></span> {{player.user}} (me)  <span style ="background-color:orange;" class="badge">{{player.chips}}</span></h4>
+      </div>
+
+
+     <div class="panel-body">
+      {% if creator and not table.insession %}
+      <div class="btn-group btn-group-sm">
+        <a href= "/pokerapp/start_game"type="button" class="btn btn-success">Start Game</a>
+        <button type="button" class="btn btn-info">Add Player</button>
+      </div>
+      {% endif %}
+
+
+  {% if player.sb %}
+          <div class="bet_button smallblind"> <p> SMALL<br>BLIND</div> 
+    {% elif player.bb %}
+    <div class="bet_button bigblind">  <p>BIG<br>BLIND<p></div> 
+    {% elif player.dd %}
+       <div class="bet_button dealer"> <p> <br>DEALER</p></div>
+
+    {% endif %}
+
+      {% if table.insession and not player.fold %}
+      <div class ="usernode col-sm-12">
+                
+            <div class="card {{player.card_1_color}}" >
+              
+               {% autoescape off %}
+               <div class="suit_middle">{{player.c1s}}</div>
+               {% endautoescape %}
+
+
+                <div class="value_top">{{player.c1n}}</div>
+                <br />
+                {% autoescape off %}
+                <div class="suit_top ">{{player.c1s}}</div>
+                {% endautoescape %}
+                
+
+
+                <div class="value_bottom">{{player.c1n}}</div>
+                <br />
+                
+                {% autoescape off %}
+               <div class="suit_bottom">{{player.c1s}}</div>
+               {% endautoescape %}
+
+            </div>
+          
+     
+                
+            <div class="card {{player.card_2_color}}" >
+              
+               {% autoescape off %}
+               <div class="suit_middle">{{player.c2s}}</div>
+               {% endautoescape %}
+
+
+                <div class="value_top">{{player.c2n}}</div>
+                <br />
+                {% autoescape off %}
+                <div class="suit_top ">{{player.c2s}}</div>
+                {% endautoescape %}
+                
+     
+                <div class="value_bottom">{{player.c2n}}</div>
+                <br />
+                
+                {% autoescape off %}
+               <div class="suit_bottom">{{player.c2s}}</div>
+               {% endautoescape %}
+
+            </div>
+          </div>
+        {% endif %}
+
+             
+
+   
+        {% if creator and table.insession %}
+        <div class ="col-sm-12" style ="margin:0px: auto">
+      <div class="btn-group btn-group-sm">
+        
+      
+       
+
+      </div>
+    </div>
+      {% elif not creator and table.insession or not table.insession and not table.creator%}
+        <div class ="col-sm-12">
+         </div>
+      
+
+      
+
+      {% endif %}
+        <div style = "background-color:;color:white; padding:5px; position:relative; top:10px">
+       
+        <table class = "table" >
+      
+          <h4>Bets</h4>
+
+          <tr>  
+
+            <th>Round:  {{player.curr_bet}}</th>
+            <th>Total:  {{player.total_bets}}</th>
+          </tr>
+        
+
+        </table>
+        </div>
+
+
+      {% if player_bet %}
+        <div class ="col-sm-10" style ="margin:0px: auto">
+   
+
+        <a type="button"href ="/pokerapp/call" class="btn btn-success">Call</a>
+        <a type="button"href ="/pokerapp/fold" class="btn btn-warning">Fold</a>
+         <a type="button" class="btn btn-primary" id= "raise_button">Enter Bet</a>
+
+         <div style="color:white; font-size:20px; top:10px; position:relative;"><p>{{to_call}} To Call</p></div>
+
+         
+          <form method ="post" role="form" id="enter_raise" style="display:none;">{% csrf_token %}
+            <br>
+            <input name = "raise">
+
+            <button type = "submit" href="#"class="btn btn-info">Bet</button>
+
+
+          </form>
+         
+
+      </div>
+
+      {% endif %}
+
+    
+
+
+   
+
+
+
+
+         </div>
+
+    </div>
+
+
+  </div>
+
+
+    {% for p in players %}
+
+
+
+  <div class ="usernode users col-md-3 col-sm-6 col-xs-12">
+
+
+    {% if p.sb %}
+
+          <div class="bet_button smallblind"> <p>SMALL<br>BLIND</p></div> 
+    {% elif p.bb %}
+    <div class="bet_button bigblind"> <p> BIG<br>BLIND</p></div> 
+    {% elif p.dd %}
+       <div class="bet_button dealer"> <p> <br>DEALER</p></div>
+    {% endif %}
+
+
+    {% if p.ob %}
+          
+    <div class="panel panel-warning">
+      <div class="bet_button onbet">  <p>ON <br>BET </p></div> 
+
+
+
+    {% elif p.fold %}
+     <div class="panel panel-danger">
+
+    {% else %}
+
+     <div class="panel panel-info">
+
+    {% endif %}
+
+
+      <div class="panel-heading"> 
+        <h4> <span class="glyphicon glyphicon-user"></span> {{p.user}}  <span style ="background-color:orange;" class="badge">{{p.chips}}</span></h4>
+      </div>
+     <div class="panel-body">
+       {% if table.insession %}
+ 
+      {% if not p.fold %}
+           <div class="card"><img class="cardimg" src="http://i.imgur.com/kuqu0aS.jpg"></div>
+        <div class="card"><img class = "cardimg" src="http://i.imgur.com/kuqu0aS.jpg"></div>
+        <br><br>
+        <br><br>
+        <div style = "background-color:;color:white; padding:5px">
+
+        <table class = "table" >
+
+          <h4>Bets</h4>
+
+          <tr>  
+
+            <th>Round:  {{p.curr_bet}}</th>
+            <th>Total:  {{p.total_bets}}</th>
+          </tr>
+        
+
+        </table>
+        </div>
+
+  
+
+      {% endif %}
+
+  
+        {% endif %}
+
+
+         </div>
+    </div>
+
+
+  </div>
+  {% endfor %}
+
+</div>
+</div>
+
+
+
+
+{% endblock %}
+
+
+
+
+
+{% block postscript %}
+
+
+
+
+<script type="text/javascript">
+
+
+
+
+$(document).ready(function(){
+$("#raise_button").click(function(){
+  $('#enter_raise').css('display','block');
+   $('#raise_button').css('display','none');
+});
+
+});
+
+</script>
+{% endblock postscript %}

@@ -1,0 +1,82 @@
+{% extends 'pokerapp/base.html' %}
+
+{% block content %}
+
+
+<style type="text/css">
+
+.tableform{
+  display: block;
+   margin:auto;
+ 
+}
+
+a:hover{
+	text-decoration:none;
+}
+body{
+
+
+  font-family: 'Ubuntu', sans-serif;
+}
+
+</style>
+
+
+
+<div class="container">
+	<div class="page-header">
+	  <h1> Join a Texas Hold'em table </h1>
+	</div>
+	 <div class="container">
+    <div class ="row center-row">
+<div class ="col-md-5 col-sm-10">
+  {% if error %}
+  <br>
+  <div class="alert alert-danger">{{error}}</div>
+
+    {% endif %}
+      <form class="form-signin tableform" method = 'post' role="form">{% csrf_token %}
+        
+        <select  name = "tablename"  class="form-control">
+            {% for table in tables %}
+
+
+
+            <option value ="{{table.id}}"> {{table.name}}</option>
+            {% endfor %}
+             
+       </select>
+        <button class="btn btn-lg btn-success btn-block" type="submit">Join</button>
+
+      </form>
+
+</div>
+
+<div class ="col-md-5 col-sm-10">
+  <h4>Open Tables</h4>
+  {% for table in tables %}
+
+  <li> {{table.name}} &nbsp;&nbsp;&nbsp;&nbsp; <small>-created by {{table.creator}}</small> </li>
+  {% endfor %}
+  </div>
+
+    </div>
+
+  </div>
+
+
+
+
+</div>
+
+
+<!-- LOGIN FORM -->
+
+
+
+
+
+
+
+{% endblock %}

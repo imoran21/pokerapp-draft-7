@@ -1,0 +1,50 @@
+{% extends 'reg/base.html' %}
+
+{% block content %}
+
+
+
+<style type="text/css">
+
+.loginform{
+  display: block;
+    margin: 0 auto;
+}
+</style>
+
+
+<div class="container">
+  <div class="page-header">
+    <h1> Register <small>Your information will not be shared</small></h1>
+  </div>
+
+
+    <div class="container">
+    <div class ="row center-row">
+<div class ="col-md-5 col-sm-10">
+  {% if error %}
+  <br>
+  <div class="alert alert-danger">{{error}}</div>
+
+    {% endif %}
+      <form class="form-signin loginform" method = 'post' role="form">{% csrf_token %}
+
+        <input name = "email" type="email" class="form-control" placeholder="Email address" required="" autofocus="">
+        <input name = "username" type="username" class="form-control" placeholder="User Name" required="" autofocus="">
+        <input type="password" name="password" class="form-control" placeholder="Password" required="">
+         <input type="password" name="password2" class="form-control" placeholder="Password (verify)" required="">
+        <button class="btn btn-lg btn-success btn-block" type="submit">Register</button>
+
+      </form>
+
+</div>
+
+    </div>
+
+  </div>
+
+
+	
+
+
+{% endblock %}

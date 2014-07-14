@@ -1,0 +1,107 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+
+<style type="text/css">
+.spacer{
+  width:100%;
+  height:5em;
+}
+
+
+</style>
+
+
+        {% load staticfiles %}
+  <!-- Bootstrap -->
+      <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
+
+ 
+
+<!-- Latest compiled and minified JavaScript -->
+
+
+      <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+        <title>{% block head_title %}Thryve{% endblock %}</title>
+    </head>
+    <body>
+      
+
+
+<!--     ADD STUFF HERE  EX. NAV    -->
+
+{% if user.is_authenticated %}
+
+<div class="bs-example">
+    <nav class="navbar navbar-inverse navbar-fixed" role="navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-3">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/">Home</a>
+        </div>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-3">
+        <a href="/reg/logout"> <button type="button" class="btn btn-warning navbar-btn">Logout</button></a> 
+
+        </div>
+      </div>
+    </nav>
+  </div>
+
+
+
+  {% else %}
+
+
+<div class="bs-example">
+    <nav class="navbar navbar-inverse navbar-fixed" role="navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-3">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/">Home</a>
+        </div>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-3">
+        <a href="/reg/login"> <button type="button" class="btn btn-info navbar-btn">Login</button></a>
+        <a href="/reg/register"> <button type="button" class="btn btn-info navbar-btn">Register</button></a>  
+
+        </div>
+      </div>
+    </nav>
+  </div>
+
+  {% endif %}
+
+        {% block content %}
+       
+        {% endblock %}
+        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+
+
+    </body>
+</html>

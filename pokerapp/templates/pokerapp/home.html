@@ -1,0 +1,94 @@
+{% extends 'pokerapp/base.html' %}
+
+{% block content %}
+
+
+<style type="text/css">
+
+.loginform{
+  display: block;
+   margin:auto;
+ 
+}
+.jumbotron{
+  background-color: white;
+}
+body{
+
+
+  font-family: 'Ubuntu', sans-serif;
+}
+
+a:hover{
+	text-decoration:none;
+}
+
+
+</style>
+
+
+
+<div class="container">
+	<div class="page-header">
+	  <h1> Poker app Home <small> You are logged in</small></h1>
+	</div>
+	<div class = "jumbotron">
+		<h3>Hello {{user}}, <small> How are you today?</small> </h3>
+			
+	</div>
+	<div class= "jumbotron col-md-10">
+				{% if player.table %}
+				<h3>Your table: {{player.table.name}}</h3>
+				<p>Minimum bet: {{player.table.minimum}}</p>
+				{% if owner %}
+				<a class="btn btn-danger" href="/pokerapp/end_table"> End  Table</a>
+				&nbsp;&nbsp;
+
+				{% else %}
+					<a class="btn btn-danger" href="/pokerapp/leave_table"> Leave Table</a>	&nbsp;&nbsp;	&nbsp;&nbsp;
+
+
+				{% endif %}
+				<a class="btn btn-success" href="/pokerapp/view_table"> View Table</a>
+
+				<table class = "table">
+					<h3>Player Info</h3>
+					<tr>
+						<th>Username</th>
+						<th>ChipCount</th>
+
+					</tr>
+					{% for p in players %}
+					<tr>  
+						<td>{{p.user.username}}</td>
+						<td>{{p.chips}}</td>
+
+					</tr>
+					{% endfor %}
+
+
+				</table>
+
+
+				{% else %}
+				<a href="/pokerapp/create_table"> Create Table</a>	&nbsp;&nbsp;	&nbsp;&nbsp;
+				<a href="/pokerapp/enter_table"> Join Table</a>
+				{% endif %}
+
+			</div>
+
+
+
+
+</div>
+
+
+<!-- LOGIN FORM -->
+
+
+
+
+
+
+
+{% endblock %}

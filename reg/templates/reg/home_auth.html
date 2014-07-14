@@ -1,0 +1,43 @@
+{% extends 'reg/base.html' %}
+
+{% block content %}
+
+
+<style type="text/css">
+
+.loginform{
+  display: block;
+   margin:auto;
+ 
+}
+
+a:hover{
+	text-decoration:none;
+}
+
+
+</style>
+
+
+
+<div class="container">
+	<div class="page-header">
+	  <h1> Home <small> You are logged in</small></h1>
+	</div>
+	<div class = "jumbotron">
+		<h3>Hello {{user}}, <small> How are you today?</small> </h3>
+
+	</div>
+
+</div>
+
+
+<!-- LOGIN FORM -->
+
+
+
+
+
+
+
+{% endblock %}

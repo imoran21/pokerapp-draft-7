@@ -1,0 +1,63 @@
+{% extends 'pokerapp/base.html' %}
+
+{% block content %}
+
+
+<style type="text/css">
+
+.tableform{
+  display: block;
+   margin:auto;
+ 
+}
+
+a:hover{
+	text-decoration:none;
+}
+
+
+</style>
+
+
+
+<div class="container">
+	<div class="page-header">
+	  <h1> Create a Texas Hold'em table </h1>
+	</div>
+	 <div class="container">
+    <div class ="row center-row">
+<div class ="col-md-5 col-sm-10">
+  {% if error %}
+  <br>
+  <div class="alert alert-danger">{{error}}</div>
+
+    {% endif %}
+      <form class="form-signin tableform" method = 'post' role="form">{% csrf_token %}
+
+        <input name = "tablename"  class="form-control" placeholder="Table Name" required="" autofocus="">
+        <input name = "minimum" type = "number" class="form-control" placeholder="Minimum bet" required="" autofocus="">
+        <button class="btn btn-lg btn-success btn-block" type="submit">Create</button>
+
+      </form>
+
+</div>
+
+    </div>
+
+  </div>
+
+
+
+
+</div>
+
+
+<!-- LOGIN FORM -->
+
+
+
+
+
+
+
+{% endblock %}

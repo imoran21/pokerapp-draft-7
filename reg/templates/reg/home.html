@@ -1,0 +1,76 @@
+{% extends 'reg/base.html' %}
+
+{% block content %}
+
+
+<style type="text/css">
+
+.loginform{
+  display: block;
+   margin:auto;
+ 
+}
+
+a:hover{
+	text-decoration:none;
+}
+
+
+</style>
+
+{% if user.is_authenticated %}
+
+
+<div class="container">
+	<div class="page-header">
+	  <h1> Logged In <small>You are logged in</small></h1>
+	</div>
+	<div class="col-md-4"> <a href="/reg/logout"><button class="btn btn-lg btn-warning btn-block" type="button" >logout</button></a></div>
+</div>
+
+{% else %}
+
+<div class="container">
+	<div class="page-header">
+	  <h1> Hello,  <small>Please sign in</small></h1>
+	</div>
+</div>
+
+<!-- LOGIN FORM -->
+
+
+<div class="container">
+	<div class ="row center-row">
+		<div class ="col-md-6 col-md-offset-2 col-sm-12 loginform">
+			{% if error %}
+			<div class="alert alert-warning">{{error}}</div>
+			{% endif %}
+ 
+      		<form class="form-signin" method = 'post' role="form">{% csrf_token %}
+  
+        		<input name = "username" type="username" class="form-control" placeholder="User Name" required="" autofocus="">
+       			 <input type="password" name="password" class="form-control" placeholder="Password" required="">
+      			  <br>
+    			 <div class = "col-md-6 col-xs-6"><button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button></div>
+     			<div class = "col-md-6 col-xs-6">  <a href="/reg/register"><button class="btn btn-lg btn-success btn-block" type="button">Register</button></a></div>
+   
+      
+     		 </form>
+
+
+		</div>
+
+    </div>
+
+  </div>
+
+<!-- End Login Form -->
+	
+
+
+
+
+{% endif %}
+
+
+{% endblock %}
